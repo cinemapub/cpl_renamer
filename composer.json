@@ -1,0 +1,19 @@
+{
+    "name": "brightfish/cpl_renamer",
+    "description": "Rename AA CPLs to include site name",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Brightfish\\CplRenamer\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Peter Forret",
+            "email": "p.forret@brightfish.be"
+        }
+    ],
+    "require": {
+        "ext-simplexml": "*"
+    }
+}
