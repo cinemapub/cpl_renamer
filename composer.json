@@ -15,5 +15,6 @@
     ],
     "require": {
         "ext-simplexml": "*"
-    }
+    },
+    "version": "0.0.1"
 }
