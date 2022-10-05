@@ -11,6 +11,16 @@ class CplRenamer
     }
 
     public function rename(string $playlist_folder, string $output_folder){
+        /*
+         *   <Id>urn:uuid:7f339e2b-cbe8-4293-98ae-01aadd987ae9</Id>
+              <AnnotationText>ADV-PUB2022-10-05AfterEverHappyOV2DS1-ECH-P1</AnnotationText>
+              <IssueDate>2022-10-04T13:44:52.448+02:00</IssueDate>
+              <Issuer>Unique X</Issuer>
+              <Creator>Advertising Accord</Creator>
+              <ContentTitleText>ADV-PUB2022-10-05AfterEverHappyOV2DS1-ECH-P1</ContentTitleText>
+              <ContentKind>advertisement</ContentKind>
+              <RatingList/>
+         */
         if(!is_dir($output_folder)){
             mkdir($output_folder);
         }
