@@ -19,6 +19,9 @@ This script makes it possible to rename all playlists to include the site code, 
 * this will rename all playlists and save them into folders `$PLAYLIST_ROOT/2022W40/renamed/KANT/KANT-PUB2022-10-05Avatar1OV2DS1`, so 1 folder per site and then a subfolder per playlist, with the site code als in the new name.
 
 ## Script Usage
+
+The whole operation can be done with the `process_folder.sh` scripts, which calls the PHP modules when it's required.
+
 ```
 Program : process_folder.sh  by p.forret@brightfish.be
 Version : v0.1.1 (2022-10-05 22:08)
@@ -36,7 +39,34 @@ Flags, options and parameters:
     <action>         : [choice] action to perform  [options: unzip,rename,check,env,update]
 ```
 
+## PHP Library usage
+
+The PHP library can also be called directly from another PHP script. An example of this can be found in the wrapper script `rename_folder.php`, as called from the `process_folder.sh` script.
+
+```php
+<?php
+include __DIR__ . "/../vendor/autoload.php";
+
+use Brightfish\CplRenamer\CplRenamer;
+
+$input_folder=$argv[1] ?? "";
+$output_folder=$argv[2] ?? "";
+$sitecode=$argv[3] ?? "";
+if(!$input_folder || !$output_folder || !$sitecode){
+    print "Usage: $argv[0] [input_folder] [output_folder] [sitecode]\n";
+    print "Example: $argv[0] week40/orig/ADV-PUB2022-10-05Avatar1OV2DS1 week40/renamed/KBXL-PUB2022-10-05Avatar1OV2DS1 KBXL\n";
+    exit(1);
+}
+$renamer = new CplRenamer($sitecode);
+$renamer->rename($input_folder,$output_folder);
+```
 ## Requirements
+
+### Bash requirements
+* awk
+* unzip
+
+### PHP Requirements
 * PHP 7.4 or higher
 * PHP ext-simplexml
 * PHP ext-dom
