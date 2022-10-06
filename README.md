@@ -13,12 +13,12 @@ This script makes it possible to rename all playlists to include the site code, 
 ## Procedure
 
 * imagine all playlists will be saved/rename in a certain folder, let's call the `$PLAYLIST_ROOT`
-* create a separate folder per week, e.g. `$PLAYLIST_ROOT/2022W40`
-* put all received ZIP files in the folder e.g. `$PLAYLIST_ROOT/2022W40/playlists-2022-10-05-KANT.zip` ...
-* run `process_folders.sh --input "$PLAYLIST_ROOT/2022W40" unzip` 
-* this will unzip all ZIP files into folders like `$PLAYLIST_ROOT/2022W40/orig/playlists-2022-10-05-KANT/ADV-PUB2022-10-05Avatar1OV2DS1` 
-* then run `process_folders.sh --input "$PLAYLIST_ROOT/2022W40" rename`
-* this will rename all playlists and save them into folders `$PLAYLIST_ROOT/2022W40/renamed/KANT/KANT-PUB2022-10-05Avatar1OV2DS1`, so 1 folder per site and then a subfolder per playlist, with the site code als in the new name.
+* create a separate folder per week, e.g. `$PLAYLIST_ROOT/2022W41`
+* put all received ZIP files in the folder e.g. `$PLAYLIST_ROOT/2022W41/playlists-2022-10-05-KANT.zip` ...
+* run `process_folders.sh --input "$PLAYLIST_ROOT/2022W41" unzip` 
+* this will unzip all ZIP files into folders like `$PLAYLIST_ROOT/2022W41/orig/playlists-2022-10-05-KANT/ADV-PUB2022-10-05Avatar1OV2DS1` 
+* then run `process_folders.sh --input "$PLAYLIST_ROOT/2022W41" rename`
+* this will rename all playlists and save them into folders `$PLAYLIST_ROOT/2022W41/renamed/KANT/KANT-PUB2022-10-05Avatar1OV2DS1`, so 1 folder per site and then a subfolder per playlist, with the site code added in the new name.
 
 ## Script Usage
 

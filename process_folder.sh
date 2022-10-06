@@ -46,7 +46,8 @@ flag|f|force|do not ask for confirmation (always yes)
 option|l|log_dir|folder for log files |$HOME/log/$script_prefix
 option|t|tmp_dir|folder for temp files|/tmp/$script_prefix
 option|i|input|input folder with the playlist zips|.
-option|i|prefix|zip file prefix|playlists-
+option|z|zip_prefix|zip file prefix|playlists-
+option|c|cpl_prefix|zip file prefix|ADV-
 choice|1|action|action to perform|unzip,rename,check,env,update
 " grep -v -e '^#' -e '^\s*$'
 }
@@ -70,7 +71,7 @@ Script:main() {
     [[ ! -d "$input" ]] && IO:die "Input folder [$input] does not exist"
     orig_folder="$input/orig"
     [[ ! -d "$orig_folder" ]] && mkdir "$orig_folder"
-    find "$input" -name "$prefix*.zip" \
+    find "$input" -name "$zip_prefix*.zip" \
     | sort \
     | while read -r zip ; do
         bname=$(basename "$zip" .zip)
@@ -78,7 +79,7 @@ Script:main() {
         if [[ ! -d "$outfolder" ]] ; then
           unzip "$zip" -d "$outfolder" &> "$log_file"
         fi
-        nb_playlists=$(find "$outfolder" -type f -name "*.xml" | wc -l)
+        nb_playlists=$(find "$outfolder" -type f -name "$cpl_prefix*.xml" | wc -l)
         IO:print "$(du -sh "$outfolder") - $nb_playlists playlists"
       done
     ;;
@@ -94,19 +95,19 @@ Script:main() {
 
     php_script="$script_install_folder/src/rename_folder.php"
 
-    find "$orig_folder" -maxdepth 1 -type d -name "$prefix*" \
+    find "$orig_folder" -maxdepth 1 -type d -name "$zip_prefix*" \
     | sort \
     | while read -r site_folder ; do
         bsite=$(basename "$site_folder")
         sitecode=$(echo "$bsite" | tr '-' "\n" | tail -1)
         output_site="$output_root/$sitecode"
         [[ ! -d "$output_site" ]] && mkdir -p "$output_site"
-        IO:announce "Now processing $bsite"
+        IO:print "# Now processing $bsite ..."
         find "$site_folder" -maxdepth 1 -mindepth 1 -type d \
         | while read -r movie_folder ; do
             bmovie=$(basename "$movie_folder")
             output_folder="$output_site/${bmovie/ADV-/$sitecode-}"
-            IO:print "[$movie_folder] -> [$output_folder]"
+            IO:print "- create [$output_folder]"
             php "$php_script" "$movie_folder" "$output_folder" "$sitecode"
           done
 
