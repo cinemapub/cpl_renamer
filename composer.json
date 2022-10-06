@@ -14,7 +14,8 @@
         }
     ],
     "require": {
-        "ext-simplexml": "*"
+        "ext-simplexml": "*",
+      "ext-dom": "*"
     },
     "version": "0.0.2"
 }

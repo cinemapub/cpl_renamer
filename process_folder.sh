@@ -1,13 +1,7 @@
 #!/usr/bin/env bash
-### ==============================================================================
-### SO HOW DO YOU PROCEED WITH YOUR SCRIPT?
-### 1. define the flags/options/parameters and defaults you need in Option:config()
-### 2. implement the different actions in Script:main() with helper functions
-### 3. implement helper functions you defined in previous step
-### ==============================================================================
-
 ### Created by Peter Forret ( cinemapub ) on 2022-10-05
 ### Based on https://github.com/pforret/bashew 1.18.8
+
 script_version="0.0.1" # if there is a VERSION.md in this script's folder, it will take priority for version number
 readonly script_author="p.forret@brightfish.be"
 readonly script_created="2022-10-05"
@@ -51,8 +45,9 @@ flag|v|verbose|also show debug messages
 flag|f|force|do not ask for confirmation (always yes)
 option|l|log_dir|folder for log files |$HOME/log/$script_prefix
 option|t|tmp_dir|folder for temp files|/tmp/$script_prefix
-choice|1|action|action to perform|action1,action2,check,env,update
-#param|?|input|input file/text
+option|i|input|input folder with the playlist zips|.
+option|i|prefix|zip file prefix|playlists-
+choice|1|action|action to perform|unzip,rename,check,env,update
 " grep -v -e '^#' -e '^\s*$'
 }
 
@@ -67,16 +62,55 @@ Script:main() {
 
   action=$(Str:lower "$action")
   case $action in
-  action1)
-    #TIP: use «$script_prefix action1» to ...
-    #TIP:> $script_prefix action1
-    do_action1
+  unzip)
+    #TIP: use «$script_prefix unzip» to unzip playlist ZIPs into the folders
+    #TIP:> $script_prefix --input "playlist/week40" unzip
+    Os:require unzip
+
+    [[ ! -d "$input" ]] && IO:die "Input folder [$input] does not exist"
+    orig_folder="$input/orig"
+    [[ ! -d "$orig_folder" ]] && mkdir "$orig_folder"
+    find "$input" -name "$prefix*.zip" \
+    | sort \
+    | while read -r zip ; do
+        bname=$(basename "$zip" .zip)
+        outfolder="$orig_folder/$bname"
+        if [[ ! -d "$outfolder" ]] ; then
+          unzip "$zip" -d "$outfolder" &> "$log_file"
+        fi
+        nb_playlists=$(find "$outfolder" -type f -name "*.xml" | wc -l)
+        IO:print "$(du -sh "$outfolder") - $nb_playlists playlists"
+      done
     ;;
 
-  action2)
-    #TIP: use «$script_prefix action2» to ...
-    #TIP:> $script_prefix action2
-    do_action2
+  rename)
+    #TIP: use «$script_prefix rename» to ...
+    #TIP:> $script_prefix rename
+    [[ ! -d "$input" ]] && IO:die "Input folder [$input] does not exist"
+    orig_folder="$input/orig"
+    [[ ! -d "$orig_folder" ]] && IO:die "Unzip ZIP files first with [$0 unzip]"
+    output_root="$input/renamed"
+    [[ ! -d "$output_root" ]] && mkdir "$output_root"
+
+    php_script="$script_install_folder/src/rename_folder.php"
+
+    find "$orig_folder" -maxdepth 1 -type d -name "$prefix*" \
+    | sort \
+    | while read -r site_folder ; do
+        bsite=$(basename "$site_folder")
+        sitecode=$(echo "$bsite" | tr '-' "\n" | tail -1)
+        output_site="$output_root/$sitecode"
+        [[ ! -d "$output_site" ]] && mkdir -p "$output_site"
+        IO:announce "Now processing $bsite"
+        find "$site_folder" -maxdepth 1 -mindepth 1 -type d \
+        | while read -r movie_folder ; do
+            bmovie=$(basename "$movie_folder")
+            output_folder="$output_site/${bmovie/ADV-/$sitecode-}"
+            IO:print "[$movie_folder] -> [$output_folder]"
+            php "$php_script" "$movie_folder" "$output_folder" "$sitecode"
+          done
+
+      done
     ;;
 
   check | env)
@@ -108,8 +142,8 @@ Script:main() {
 ## Put your helper scripts here
 #####################################################################
 
-do_action1() {
-  IO:log "action1"
+do_unzip() {
+  IO:log "unzip"
   # Examples of required binaries/scripts and how to install them
   # Os:require "ffmpeg"
   # Os:require "convert" "imagemagick"
@@ -117,8 +151,8 @@ do_action1() {
   # (code)
 }
 
-do_action2() {
-  IO:log "action2"
+do_rename() {
+  IO:log "rename"
   # (code)
 
 }
