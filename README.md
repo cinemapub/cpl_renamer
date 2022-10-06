@@ -1,5 +1,7 @@
 # Brightfish CPL renamer
 
+![](assets/unsplash.writer.jpg)
+
 ## Problem
 
 Advertising Accord now generates weekly CPL playlists that do not include the site code in the CPL name/folder name. This makes it impossible to ingest playlists for multiple sites (cinemas) in 1 repository. Site 1 would have a playlist called `ADV-PUB2022-10-05Avatar1OV2DS1-MAIN-P2` (for "Avatar 1" movie) and another site would have a different playlist for Avatar1 with exactly the same name, but with a different UUID. This makes it impossible to see which playlists are for which site.
