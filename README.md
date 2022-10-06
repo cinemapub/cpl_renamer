@@ -12,7 +12,7 @@ This script makes it possible to rename all playlists to include the site code, 
 
 * imagine all playlists will be saved/rename in a certain folder, let's call the `$PLAYLIST_ROOT`
 * create a separate folder per week, e.g. `$PLAYLIST_ROOT/2022W40`
-* put all received ZIP files in the folder e.g. `playlists-2022-10-05-KANT.zip` ...
+* put all received ZIP files in the folder e.g. `$PLAYLIST_ROOT/2022W40/playlists-2022-10-05-KANT.zip` ...
 * run `process_folders.sh --input "$PLAYLIST_ROOT/2022W40" unzip` 
 * this will unzip all ZIP files into folders like `$PLAYLIST_ROOT/2022W40/orig/playlists-2022-10-05-KANT/ADV-PUB2022-10-05Avatar1OV2DS1` 
 * then run `process_folders.sh --input "$PLAYLIST_ROOT/2022W40" rename`
