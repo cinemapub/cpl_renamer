@@ -12,6 +12,8 @@ This script makes it possible to rename all playlists to include the site code, 
 
 ## Procedure
 
+The whole operation can be done with the `process_folder.sh` scripts, which calls the PHP modules when it's required.
+
 * imagine all playlists will be saved/rename in a certain folder, let's call the `$PLAYLIST_ROOT`
 * create a separate folder per week, e.g. `$PLAYLIST_ROOT/2022W41`
 * put all received ZIP files in the folder e.g. `$PLAYLIST_ROOT/2022W41/playlists-2022-10-05-KANT.zip` ...
@@ -21,8 +23,6 @@ This script makes it possible to rename all playlists to include the site code, 
 * this will rename all playlists and save them into folders `$PLAYLIST_ROOT/2022W41/renamed/KANT/KANT-PUB2022-10-05Avatar1OV2DS1`, so 1 folder per site and then a subfolder per playlist, with the site code added in the new name.
 
 ## Script Usage
-
-The whole operation can be done with the `process_folder.sh` scripts, which calls the PHP modules when it's required.
 
 ```
 Program : process_folder.sh  by p.forret@brightfish.be
