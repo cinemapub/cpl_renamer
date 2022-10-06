@@ -47,7 +47,7 @@ option|l|log_dir|folder for log files |$HOME/log/$script_prefix
 option|t|tmp_dir|folder for temp files|/tmp/$script_prefix
 option|i|input|input folder with the playlist zips|.
 option|z|zip_prefix|zip file prefix|playlists-
-option|c|cpl_prefix|zip file prefix|ADV-
+option|c|cpl_prefix|playlist folder prefix|ADV-
 choice|1|action|action to perform|unzip,rename,check,env,update
 " grep -v -e '^#' -e '^\s*$'
 }
