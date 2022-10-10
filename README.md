@@ -31,18 +31,18 @@ The whole operation can be done with the `process_folder.sh` scripts, which call
   * `$PLAYLIST_ROOT/2022W41/renamed/KANT/KANT-PUB2022-10-05Avatar1OV2DS1`
   * `$PLAYLIST_ROOT/2022W41/renamed/KANT/KANT-PUB2022-10-05DontWorryDarlingOV2DS1`
   * `$PLAYLIST_ROOT/2022W41/renamed/KBXL/KBXL-PUB2022-10-05Avatar1OV2DS1`
+* so 1 folder per site and then a subfolder per playlist, with the site code added in the new name.
 * then run `cpl_renamer.sh --input "$PLAYLIST_ROOT/2022W41" rezip`
-* this will create a ZIP file per site
+* this will create a ZIP file per site, with all renamed playlists
   * `$PLAYLIST_ROOT/2022W41/renamed/renamed_2022W41_KANT.zip`
   * `$PLAYLIST_ROOT/2022W41/renamed/renamed_2022W41_KBXL.zip`
 
-so 1 folder per site and then a subfolder per playlist, with the site code added in the new name.
 
 ## Script Usage
 
-```
+```bash
 Program : cpl_renamer.sh  by p.forret@brightfish.be
-Version : v0.1.11 (2022-10-10 17:28)
+Version : v0.2.0 (2022-10-10 17:28)
 Purpose : process folder with Kinepolis playlists
 Usage   : cpl_renamer.sh [-h] [-q] [-v] [-f] [-l <log_dir>] [-t <tmp_dir>] [-i <input>] [-z <zip_prefix>] [-c <cpl_prefix>] <action>
 Flags, options and parameters:
