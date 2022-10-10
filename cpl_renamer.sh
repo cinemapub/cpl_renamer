@@ -85,8 +85,8 @@ Script:main() {
     ;;
 
   rename)
-    #TIP: use «$script_prefix rename» to ...
-    #TIP:> $script_prefix rename
+    #TIP: use «$script_prefix rename» to rename the CPLs to contain the Site Code
+    #TIP:> $script_prefix --input "playlist/week40" rename
     [[ ! -d "$input" ]] && IO:die "Input folder [$input] does not exist"
     orig_folder="$input/orig"
     [[ ! -d "$orig_folder" ]] && IO:die "Unzip ZIP files first with [$0 unzip]"
@@ -115,8 +115,9 @@ Script:main() {
     ;;
 
   rezip)
-    #TIP: use «$script_prefix rezip» to ...
-    #TIP:> $script_prefix rezip
+    #TIP: use «$script_prefix rezip» to make ZIP files of the renamed CPLs
+    #TIP:> $script_prefix --input "playlist/week40" rezip
+    Os:require zip
     [[ ! -d "$input" ]] && IO:die "Input folder [$input] does not exist"
     output_root="$input/renamed"
     [[ ! -d "$output_root" ]] && IO:die "Renamed playlists not ready in [$output_root]"
