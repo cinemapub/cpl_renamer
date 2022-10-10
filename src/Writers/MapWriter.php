@@ -21,7 +21,7 @@ class MapWriter extends BaseWriter
         $this->contents->addChild('AssetList');
     }
 
-    public function addAsset(string $filename)
+    public function addAsset(string $filename,string $type = "CPL" )
     {
         /*
         <Asset>
@@ -36,6 +36,9 @@ class MapWriter extends BaseWriter
          */
         $asset = $this->contents->AssetList->addChild("Asset");
         $asset->addChild("Id", (new BaseParser($filename))->Id());
+        if($type == "PKL"){
+            $asset->addChild("PackingList");
+        }
         $chunk = $asset->addChild("ChunkList")->addChild("Chunk");
         $chunk->addChild("Path", basename($filename));
         $chunk->addChild("VolumeIndex", 1);

@@ -96,7 +96,11 @@ class CplRenamer
         }
         $map = new MapWriter();
         foreach (glob("$output_folder/*.xml") as $xml_file) {
-            $map->addAsset($xml_file);
+            if(basename($xml_file) == "PKL.xml"){
+                $map->addAsset($xml_file,"PKL");
+            } else {
+                $map->addAsset($xml_file);
+            }
         }
         return $map->saveToFile("$output_folder/ASSETMAP");
     }

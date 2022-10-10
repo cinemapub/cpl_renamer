@@ -38,7 +38,7 @@ so 1 folder per site and then a subfolder per playlist, with the site code added
 
 ```
 Program : process_folder.sh  by p.forret@brightfish.be
-Version : v0.1.8 (2022-10-06 12:25)
+Version : v0.1.9 (2022-10-06 12:32)
 Purpose : process folder with Kinepolis playlists
 Usage   : process_folder.sh [-h] [-q] [-v] [-f] [-l <log_dir>] [-t <tmp_dir>] [-i <input>] [-z <zip_prefix>] [-c <cpl_prefix>] <action>
 Flags, options and parameters:
@@ -50,7 +50,7 @@ Flags, options and parameters:
     -t|--tmp_dir <?> : [option] folder for temp files  [default: /tmp/process_folder]
     -i|--input <?>   : [option] input folder with the playlist zips  [default: .]
     -z|--zip_prefix <?>: [option] zip file prefix  [default: playlists-]
-    -c|--cpl_prefix <?>: [option] zip file prefix  [default: ADV-]
+    -c|--cpl_prefix <?>: [option] playlist folder prefix  [default: ADV-]
     <action>         : [choice] action to perform  [options: unzip,rename,check,env,update]
 ```
 

@@ -36,7 +36,7 @@ class PklWriter extends BaseWriter
         $OriginalFileName = basename($Filename);
         $asset = $this->contents->AssetList->addChild("Asset");
         $asset->Id = $Id;
-        $asset->Annotationtext = $AnnotationText;
+        $asset->AnnotationText = $AnnotationText;
         $asset->Hash = $Hash;
         $asset->Size = $Size;
         $asset->Type = $Type;
