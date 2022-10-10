@@ -48,7 +48,7 @@ option|t|tmp_dir|folder for temp files|/tmp/$script_prefix
 option|i|input|input folder with the playlist zips|.
 option|z|zip_prefix|zip file prefix|playlists-
 option|c|cpl_prefix|playlist folder prefix|ADV-
-choice|1|action|action to perform|unzip,rename,check,env,update
+choice|1|action|action to perform|unzip,rename,rezip,check,env,update
 " grep -v -e '^#' -e '^\s*$'
 }
 
@@ -111,6 +111,22 @@ Script:main() {
             php "$php_script" "$movie_folder" "$output_folder" "$sitecode"
           done
 
+      done
+    ;;
+
+  rezip)
+    #TIP: use «$script_prefix rezip» to ...
+    #TIP:> $script_prefix rezip
+    [[ ! -d "$input" ]] && IO:die "Input folder [$input] does not exist"
+    output_root="$input/renamed"
+    [[ ! -d "$output_root" ]] && IO:die "Renamed playlists not ready in [$output_root]"
+    find "$output_root" -mindepth 1 -maxdepth 1 -type d \
+    | while read -r site_folder ; do
+      (
+        cd "$output_root" || IO:die "Invalid folder [$output_root]"
+        zipfile="renamed_$(basename "$input")_$(basename "$site_folder").zip"
+        zip -r "$zipfile" "$(basename "$site_folder")"
+      )
       done
     ;;
 
