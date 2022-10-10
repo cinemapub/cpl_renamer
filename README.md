@@ -20,38 +20,42 @@ The whole operation can be done with the `process_folder.sh` scripts, which call
   * `$PLAYLIST_ROOT/2022W41/playlists-2022-10-05-KANT.zip`
   * `$PLAYLIST_ROOT/2022W41/playlists-2022-10-05-KBXL.zip` 
   * ...
-* run `process_folders.sh --input "$PLAYLIST_ROOT/2022W41" unzip` 
+* run `cpl_renamer.sh --input "$PLAYLIST_ROOT/2022W41" unzip` 
 * this will unzip all ZIP files into folders like 
     * `$PLAYLIST_ROOT/2022W41/orig/playlists-2022-10-05-KANT/ADV-PUB2022-10-05Avatar1OV2DS1`
   * `$PLAYLIST_ROOT/2022W41/orig/playlists-2022-10-05-KANT/ADV-PUB2022-10-05DontWorryDarlingOV2DS1`
   * `$PLAYLIST_ROOT/2022W41/orig/playlists-2022-10-05-KBXL/ADV-PUB2022-10-05Avatar1OV2DS1`
   * ...
-* then run `process_folders.sh --input "$PLAYLIST_ROOT/2022W41" rename`
+* then run `cpl_renamer.sh --input "$PLAYLIST_ROOT/2022W41" rename`
 * this will rename all playlists and save them into folders :
   * `$PLAYLIST_ROOT/2022W41/renamed/KANT/KANT-PUB2022-10-05Avatar1OV2DS1`
   * `$PLAYLIST_ROOT/2022W41/renamed/KANT/KANT-PUB2022-10-05DontWorryDarlingOV2DS1`
   * `$PLAYLIST_ROOT/2022W41/renamed/KBXL/KBXL-PUB2022-10-05Avatar1OV2DS1`
- 
+* then run `cpl_renamer.sh --input "$PLAYLIST_ROOT/2022W41" rezip`
+* this will create a ZIP file per site
+  * `$PLAYLIST_ROOT/2022W41/renamed/renamed_2022W41_KANT.zip`
+  * `$PLAYLIST_ROOT/2022W41/renamed/renamed_2022W41_KBXL.zip`
+
 so 1 folder per site and then a subfolder per playlist, with the site code added in the new name.
 
 ## Script Usage
 
 ```
-Program : process_folder.sh  by p.forret@brightfish.be
-Version : v0.1.9 (2022-10-06 12:32)
+Program : cpl_renamer.sh  by p.forret@brightfish.be
+Version : v0.1.11 (2022-10-10 17:28)
 Purpose : process folder with Kinepolis playlists
-Usage   : process_folder.sh [-h] [-q] [-v] [-f] [-l <log_dir>] [-t <tmp_dir>] [-i <input>] [-z <zip_prefix>] [-c <cpl_prefix>] <action>
+Usage   : cpl_renamer.sh [-h] [-q] [-v] [-f] [-l <log_dir>] [-t <tmp_dir>] [-i <input>] [-z <zip_prefix>] [-c <cpl_prefix>] <action>
 Flags, options and parameters:
     -h|--help        : [flag] show usage [default: off]
     -q|--quiet       : [flag] no output [default: off]
     -v|--verbose     : [flag] also show debug messages [default: off]
     -f|--force       : [flag] do not ask for confirmation (always yes) [default: off]
-    -l|--log_dir <?> : [option] folder for log files   [default: /home/forretp/log/process_folder]
-    -t|--tmp_dir <?> : [option] folder for temp files  [default: /tmp/process_folder]
+    -l|--log_dir <?> : [option] folder for log files   [default: /home/forretp/log/cpl_renamer]
+    -t|--tmp_dir <?> : [option] folder for temp files  [default: /tmp/cpl_renamer]
     -i|--input <?>   : [option] input folder with the playlist zips  [default: .]
     -z|--zip_prefix <?>: [option] zip file prefix  [default: playlists-]
     -c|--cpl_prefix <?>: [option] playlist folder prefix  [default: ADV-]
-    <action>         : [choice] action to perform  [options: unzip,rename,check,env,update]
+    <action>         : [choice] action to perform  [options: unzip,rename,rezip,check,env,update]
 ```
 
 ## PHP Library usage
