@@ -1,5 +1,6 @@
-/vendor/
-/test/
-.idea/
-cache/
 .env
+/.idea/
+/cache/
+/playlists/
+/test/
+/vendor/
