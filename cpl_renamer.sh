@@ -93,24 +93,17 @@ Script:main() {
     output_root="$input/renamed"
     [[ ! -d "$output_root" ]] && mkdir "$output_root"
 
-    php_script="$script_install_folder/src/rename_folder.php"
+    php_script="$script_install_folder/src/renameSiteMovies.php"
 
     find "$orig_folder" -maxdepth 1 -type d -name "$zip_prefix*" \
     | sort \
-    | while read -r site_folder ; do
-        bsite=$(basename "$site_folder")
-        sitecode=$(echo "$bsite" | tr '-' "\n" | tail -1)
-        output_site="$output_root/$sitecode"
+    | while read -r site_input ; do
+        bsite=$(basename "$site_input")
+        site_code=$(echo "$bsite" | tr '-' "\n" | tail -1)
+        output_site="$output_root/$site_code"
         [[ ! -d "$output_site" ]] && mkdir -p "$output_site"
         IO:print "# Now processing $bsite ..."
-        find "$site_folder" -maxdepth 1 -mindepth 1 -type d \
-        | while read -r movie_folder ; do
-            bmovie=$(basename "$movie_folder")
-            output_folder="$output_site/${bmovie/ADV-/$sitecode-}"
-            IO:print "- create [$output_folder]"
-            php "$php_script" "$movie_folder" "$output_folder" "$sitecode"
-          done
-
+        php "$php_script" "$site_input" "$output_site" "$site_code"
       done
     ;;
 
@@ -118,15 +111,18 @@ Script:main() {
     #TIP: use «$script_prefix rezip» to make ZIP files of the renamed CPLs
     #TIP:> $script_prefix --input "playlist/week40" rezip
     Os:require zip
+    Os:require unzip
     [[ ! -d "$input" ]] && IO:die "Input folder [$input] does not exist"
     output_root="$input/renamed"
     [[ ! -d "$output_root" ]] && IO:die "Renamed playlists not ready in [$output_root]"
     find "$output_root" -mindepth 1 -maxdepth 1 -type d \
-    | while read -r site_folder ; do
+    | sort \
+    | while read -r site_input ; do
       (
         cd "$output_root" || IO:die "Invalid folder [$output_root]"
-        zipfile="renamed_$(basename "$input")_$(basename "$site_folder").zip"
-        zip -r "$zipfile" "$(basename "$site_folder")"
+        zipfile="renamed_$(basename "$input")_$(basename "$site_input").zip"
+        zip -r "$zipfile" "$(basename "$site_input")" &> "$log_file"
+        IO:print "[$zipfile]: $(unzip -l "$zipfile" | grep -c ASSETMAP) movies"
       )
       done
     ;;

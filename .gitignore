@@ -1,3 +1,5 @@
 /vendor/
 /test/
 .idea/
+cache/
+.env

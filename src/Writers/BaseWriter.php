@@ -36,7 +36,7 @@ class BaseWriter
     public function saveToFile(string $filename): bool
     {
         if(!isset($this->contents)){
-            throw new InputInvalidException('No data to export');
+            throw new InputInvalidException('No contents to export');
         }
         $dom = new \DOMDocument('1.0');
         $dom->preserveWhiteSpace = true;

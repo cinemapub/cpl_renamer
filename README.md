@@ -77,7 +77,7 @@ if(!$input_folder || !$output_folder || !$sitecode){
     exit(1);
 }
 $renamer = new CplRenamer($sitecode);
-$renamer->rename($input_folder,$output_folder);
+$renamer->renameMoviePlaylists($input_folder,$output_folder);
 ```
 ## Requirements
 
