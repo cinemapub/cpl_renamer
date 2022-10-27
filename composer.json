@@ -22,5 +22,5 @@
     "pforret/php_markdown_writer": "^0.3.8",
     "vlucas/phpdotenv": "^5.5"
   },
-  "version": "0.3.0"
+  "version": "0.3.1"
 }
