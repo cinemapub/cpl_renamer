@@ -20,7 +20,8 @@
     "ext-json": "*",
     "ext-simplexml": "*",
     "pforret/php_markdown_writer": "^0.3.8",
-    "vlucas/phpdotenv": "^5.5"
+    "vlucas/phpdotenv": "^5.5",
+    "league/csv": "^9.8"
   },
   "version": "0.3.1"
 }

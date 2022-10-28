@@ -35,7 +35,7 @@ class BaseWriter
      */
     public function saveToFile(string $filename): bool
     {
-        if(!isset($this->contents)){
+        if (!isset($this->contents)) {
             throw new InputInvalidException('No contents to export');
         }
         $dom = new \DOMDocument('1.0');
@@ -43,7 +43,7 @@ class BaseWriter
         $dom->formatOutput = true;
         $dom->loadXML($this->contents->asXML());
         file_put_contents($filename, $dom->saveXML());
-        if(!file_exists($filename) || filesize($filename) == 0){
+        if (!file_exists($filename) || filesize($filename) == 0) {
             throw new OutputFailedException("Could not create output file [$filename]");
         }
         return true;

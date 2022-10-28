@@ -70,13 +70,14 @@ use Brightfish\CplRenamer\CplRenamer;
 
 $input_folder=$argv[1] ?? "";
 $output_folder=$argv[2] ?? "";
-$sitecode=$argv[3] ?? "";
-if(!$input_folder || !$output_folder || !$sitecode){
+$site_code=$argv[3] ?? "";
+if(!$input_folder || !$output_folder || !$site_code){
+    print "------ rename all playlists of a site\n";
     print "Usage: $argv[0] [input_folder] [output_folder] [sitecode]\n";
-    print "Example: $argv[0] week40/orig/ADV-PUB2022-10-05Avatar1OV2DS1 week40/renamed/KBXL-PUB2022-10-05Avatar1OV2DS1 KBXL\n";
+    print "Example: $argv[0] week40/orig/KBXL week40/renamed/KBXL KBXL\n";
     exit(1);
 }
-$renamer = new CplRenamer($sitecode);
+$renamer = new CplRenamer($site_code);
 $renamer->renameMoviePlaylists($input_folder,$output_folder);
 ```
 ## Requirements
@@ -87,6 +88,8 @@ $renamer->renameMoviePlaylists($input_folder,$output_folder);
 
 ### PHP Requirements
 * PHP 7.4 or higher
-* PHP ext-simplexml
+* PHP ext-curl
 * PHP ext-dom
+* PHP ext-json
+* PHP ext-simplexml
 * `sudo apt install php-xml` should do the trick

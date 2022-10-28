@@ -102,9 +102,12 @@ Script:main() {
         site_code=$(echo "$bsite" | tr '-' "\n" | tail -1)
         output_site="$output_root/$site_code"
         [[ ! -d "$output_site" ]] && mkdir -p "$output_site"
-        IO:print "# Now processing $bsite ..."
+        IO:print " "
+        IO:print "# Now processing playlists for $site_code ($bsite) ..."
         php "$php_script" "$site_input" "$output_site" "$site_code"
       done
+
+    find "$output_root" -type f -name "*.csv" -exec cat  {} \; | sort -ru > "$output_root/export.all.csv"
     ;;
 
   rezip)

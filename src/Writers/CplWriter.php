@@ -27,20 +27,20 @@ class CplWriter extends BaseWriter
      */
     public function calculateCplDigest(): string
     {
-        $digest_length=3;
-        if(!isset($this->contents)){
+        $digest_length = 3;
+        if (!isset($this->contents)) {
             throw new InputInvalidException('No contents to analyze');
         }
-        $idList=[];
+        $idList = [];
         $details = new GetSpotDetails();
-        foreach($this->contents->ReelList->Reel as $reel){
-            $id=(string)$reel->Id;
-            $idList[$id]=$id;
+        foreach ($this->contents->ReelList->Reel as $reel) {
+            $id = (string)$reel->Id;
+            $idList[$id] = $id;
         }
         sort($idList);
-        $idListTxt = implode(",",$idList);
+        $idListTxt = implode(",", $idList);
 
-        return sprintf("%03d%s",count($idList),strtoupper(substr(sha1($idListTxt),0,$digest_length)));
+        return sprintf("%03d%s", count($idList), strtoupper(substr(sha1($idListTxt), 0, $digest_length)));
     }
 
     /**
@@ -48,18 +48,18 @@ class CplWriter extends BaseWriter
      */
     public function getSpotList(): array
     {
-        if(!isset($this->contents)){
+        if (!isset($this->contents)) {
             throw new InputInvalidException('No contents to analyze');
         }
-        $needed_spots=[];
+        $needed_spots = [];
         $details = new GetSpotDetails();
-        foreach($this->contents->ReelList->Reel as $reel){
-            $id=(string)$reel->Id;
+        foreach ($this->contents->ReelList->Reel as $reel) {
+            $id = (string)$reel->Id;
             $spot_info = $details->get($id);
-            if($spot_info){
+            if ($spot_info) {
                 $folder_name = $spot_info["folder_name"] ?? "";
                 $content_title = $spot_info["content_title"] ?? "";
-                $needed_spots[$folder_name]=$content_title;
+                $needed_spots[$folder_name] = $content_title;
             }
         }
         ksort($needed_spots);
