@@ -79,6 +79,7 @@ Script:main() {
         if [[ ! -d "$outfolder" ]] ; then
           unzip "$zip" -d "$outfolder" &> "$log_file"
         fi
+        mv "$zip" "$outfolder/"
         nb_playlists=$(find "$outfolder" -type f -name "$cpl_prefix*.xml" | wc -l)
         IO:print "$(du -sh "$outfolder") - $nb_playlists playlists"
       done
