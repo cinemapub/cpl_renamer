@@ -101,7 +101,9 @@ class CplRenamer
             throw new InputMissingException("Input folder not found: [$movie_playlists]");
         }
         if (!is_dir($output_site_folder)) {
-            mkdir($output_site_folder, 0777, true);
+            if (!mkdir($output_site_folder, 0777, true) && !is_dir($output_site_folder)) {
+                throw new \RuntimeException(sprintf('Directory "%s" was not created', $output_site_folder));
+            }
         }
         $cpls = glob("$movie_playlists/ADV*.xml");
         $names_with_digest = [];
@@ -222,7 +224,7 @@ class CplRenamer
         $parts = explode("/", $path);
         $response = "";
         foreach ($parts as $part) {
-            if (substr($part, 0, 4) == date("Y")) {
+            if(preg_match("|^\d\d\d\dC.*|",$part)){
                 $response = $part;
             }
         }
@@ -235,6 +237,9 @@ class CplRenamer
             "NL2DS1" => "-NL",
             "OV2DS1" => "-OV",
             "FR2DS1" => "-FR",
+            "NL3DS1" => "-NL-3D",
+            "OV3DS1" => "-OV-3D",
+            "FR3DS1" => "-FR-3D",
         ];
         return str_replace(array_keys($suffixes), array_values($suffixes), $input);
     }
