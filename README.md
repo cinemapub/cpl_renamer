@@ -84,12 +84,12 @@ $renamer->renameMoviePlaylists($input_folder,$output_folder);
 
 ### Bash requirements
 * awk
-* unzip
+* unzip / zip (`sudo apt install zip`)
 
 ### PHP Requirements
-* PHP 7.4 or higher
+* PHP 8.0 or higher
 * PHP ext-curl
 * PHP ext-dom
 * PHP ext-json
 * PHP ext-simplexml
-* `sudo apt install php-xml` should do the trick
+* `sudo apt install php8.0-xml` should do the trick
