@@ -15,28 +15,6 @@ install_package=""
 temp_files=()
 
 function Option:config() {
-  ### Change the next lines to reflect which flags/options/parameters you need
-  ### flag:   switch a flag 'on' / no value specified
-  ###     flag|<short>|<long>|<description>
-  ###     e.g. "-v" or "--verbose" for verbose output / default is always 'off'
-  ###     will be available as $<long> in the script e.g. $verbose
-  ### option: set an option / 1 value specified
-  ###     option|<short>|<long>|<description>|<default>
-  ###     e.g. "-e <extension>" or "--extension <extension>" for a file extension
-  ###     will be available a $<long> in the script e.g. $extension
-  ### list: add an list/array item / 1 value specified
-  ###     list|<short>|<long>|<description>| (default is ignored)
-  ###     e.g. "-u <user1> -u <user2>" or "--user <user1> --user <user2>"
-  ###     will be available a $<long> array in the script e.g. ${user[@]}
-  ### param:  comes after the options
-  ###     param|<type>|<long>|<description>
-  ###     <type> = 1 for single parameters - e.g. param|1|output expects 1 parameter <output>
-  ###     <type> = ? for optional parameters - e.g. param|1|output expects 1 parameter <output>
-  ###     <type> = n for list parameter    - e.g. param|n|inputs expects <input1> <input2> ... <input99>
-  ###     will be available as $<long> in the script after option/param parsing
-  ### choice:  is like a param, but when there are limited options
-  ###     choice|<type>|<long>|<description>|choice1,choice2,...
-  ###     <type> = 1 for single parameters - e.g. param|1|output expects 1 parameter <output>
 <<< "
 #commented lines will be filtered
 flag|h|help|show usage
@@ -45,10 +23,11 @@ flag|v|verbose|also show debug messages
 flag|f|force|do not ask for confirmation (always yes)
 option|l|log_dir|folder for log files |$HOME/log/$script_prefix
 option|t|tmp_dir|folder for temp files|/tmp/$script_prefix
-option|i|input|input folder with the playlist zips|.
+option|d|dropbox|Dropbox root folder
+option|i|input|input folder with the playlist zips|
 option|z|zip_prefix|zip file prefix|playlists-
 option|c|cpl_prefix|playlist folder prefix|ADV-
-choice|1|action|action to perform|unzip,rename,rezip,check,env,update
+choice|1|action|action to perform|dropbox,unzip,rename,rezip,check,env,update
 " grep -v -e '^#' -e '^\s*$'
 }
 
@@ -63,6 +42,25 @@ Script:main() {
 
   action=$(Str:lower "$action")
   case $action in
+  dropbox)
+    [[ -z "$dropbox" ]] && IO:die "Need Dropbox root folder as --dropbox"
+    [[ ! -d "$dropbox" ]] && IO:die "Dropbox folder [$dropbox] not found"
+    [[ -z "$input" ]] && IO:die "Need ZIP folder as --input"
+    [[ ! -d "$input" ]] && mkdir "$input"
+    cache_zips=$(Os:tempfile)
+    IO:debug "ZIP list in $cache_zips"
+    find "$dropbox" -type f -mtime -3 -name "*.zip" | sort > "$cache_zips"
+    for site in KANT KBRA KBRG KBXL KGNT KHAS KLEU KOST KKOR KLGE LPAL ; do
+      site_zip=$(< $cache_zips grep "$site" | tail -1 )
+      name_zip=$(basename "$site_zip")
+      destination="$input/$name_zip"
+      if [[ ! -f "$destination" ]] ; then
+        IO:progress "copy $name_zip ...         "
+        cp "$site_zip" "$destination"
+      fi
+    done
+
+    ;;
   unzip)
     #TIP: use «$script_prefix unzip» to unzip playlist ZIPs into the folders
     #TIP:> $script_prefix --input "playlist/week40" unzip
@@ -71,6 +69,7 @@ Script:main() {
     [[ ! -d "$input" ]] && IO:die "Input folder [$input] does not exist"
     orig_folder="$input/orig"
     [[ ! -d "$orig_folder" ]] && mkdir "$orig_folder"
+    # shellcheck disable=SC2154
     find "$input" -name "$zip_prefix*.zip" \
     | sort \
     | while read -r zip ; do
