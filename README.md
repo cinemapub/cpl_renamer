@@ -12,50 +12,59 @@ This script makes it possible to rename all playlists to include the site code, 
 
 ## Procedure
 
-The whole operation can be done with the `process_folder.sh` scripts, which calls the PHP modules when it's required.
+The whole operation can be done with the `cpl_renamer.sh` scripts, which calls the PHP modules when it's required.
 
 * choose a root folder for all your playlists, let's call the `$PLAYLIST_ROOT`
 * create a separate folder per week, e.g. `$PLAYLIST_ROOT/2022W41`
+
+### 1. `cpl_renamer.sh -i [week_folder] dropbox`
 * put all received ZIP files in the folder e.g. 
   * `$PLAYLIST_ROOT/2022W41/playlists-2022-10-05-KANT.zip`
   * `$PLAYLIST_ROOT/2022W41/playlists-2022-10-05-KBXL.zip` 
   * ...
+
+### 2. `cpl_renamer.sh -i [week_folder] unzip`
 * run `cpl_renamer.sh --input "$PLAYLIST_ROOT/2022W41" unzip` 
 * this will unzip all ZIP files into folders like 
     * `$PLAYLIST_ROOT/2022W41/orig/playlists-2022-10-05-KANT/ADV-PUB2022-10-05Avatar1OV2DS1`
   * `$PLAYLIST_ROOT/2022W41/orig/playlists-2022-10-05-KANT/ADV-PUB2022-10-05DontWorryDarlingOV2DS1`
   * `$PLAYLIST_ROOT/2022W41/orig/playlists-2022-10-05-KBXL/ADV-PUB2022-10-05Avatar1OV2DS1`
   * ...
+
+### 3. `cpl_renamer.sh -i [week_folder] rename`
 * then run `cpl_renamer.sh --input "$PLAYLIST_ROOT/2022W41" rename`
 * this will rename all playlists and save them into folders :
   * `$PLAYLIST_ROOT/2022W41/renamed/KANT/KANT-PUB2022-10-05Avatar1OV2DS1`
   * `$PLAYLIST_ROOT/2022W41/renamed/KANT/KANT-PUB2022-10-05DontWorryDarlingOV2DS1`
   * `$PLAYLIST_ROOT/2022W41/renamed/KBXL/KBXL-PUB2022-10-05Avatar1OV2DS1`
 * so 1 folder per site and then a subfolder per playlist, with the site code added in the new name.
+
+### 4. `cpl_renamer.sh -i [week_folder] rezip`
 * then run `cpl_renamer.sh --input "$PLAYLIST_ROOT/2022W41" rezip`
 * this will create a ZIP file per site, with all renamed playlists
   * `$PLAYLIST_ROOT/2022W41/renamed/renamed_2022W41_KANT.zip`
   * `$PLAYLIST_ROOT/2022W41/renamed/renamed_2022W41_KBXL.zip`
-
+* this will also create an Excel export `export.all.csv` with all sessions and all spots
 
 ## Script Usage
 
 ```bash
 Program : cpl_renamer.sh  by p.forret@brightfish.be
-Version : v0.2.0 (2022-10-10 17:28)
+Version : v0.5.0 (2023-01-03 12:28)
 Purpose : process folder with Kinepolis playlists
-Usage   : cpl_renamer.sh [-h] [-q] [-v] [-f] [-l <log_dir>] [-t <tmp_dir>] [-i <input>] [-z <zip_prefix>] [-c <cpl_prefix>] <action>
+Usage   : cpl_renamer.sh [-h] [-q] [-v] [-f] [-l <log_dir>] [-t <tmp_dir>] [-d <dropbox>] [-i <input>] [-z <zip_prefix>] [-c <cpl_prefix>] <action>
 Flags, options and parameters:
     -h|--help        : [flag] show usage [default: off]
     -q|--quiet       : [flag] no output [default: off]
     -v|--verbose     : [flag] also show debug messages [default: off]
     -f|--force       : [flag] do not ask for confirmation (always yes) [default: off]
-    -l|--log_dir <?> : [option] folder for log files   [default: /home/forretp/log/cpl_renamer]
+    -l|--log_dir <?> : [option] folder for log files   [default: /home/pforret/log/cpl_renamer]
     -t|--tmp_dir <?> : [option] folder for temp files  [default: /tmp/cpl_renamer]
-    -i|--input <?>   : [option] input folder with the playlist zips  [default: .]
+    -d|--dropbox <?> : [option] Dropbox root folder
+    -i|--input <?>   : [option] input folder with the playlist zips
     -z|--zip_prefix <?>: [option] zip file prefix  [default: playlists-]
     -c|--cpl_prefix <?>: [option] playlist folder prefix  [default: ADV-]
-    <action>         : [choice] action to perform  [options: unzip,rename,rezip,check,env,update]
+    <action>         : [choice] action to perform  [options: dropbox,unzip,rename,rezip,check,env,update]
 ```
 
 ## PHP Library usage
