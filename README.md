@@ -48,7 +48,7 @@ The whole operation can be done with the `cpl_renamer.sh` scripts, which calls t
 
 ## Script Usage
 
-```bash
+```
 Program : cpl_renamer.sh  by p.forret@brightfish.be
 Version : v0.5.0 (2023-01-03 12:28)
 Purpose : process folder with Kinepolis playlists
