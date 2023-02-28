@@ -23,11 +23,14 @@ flag|v|verbose|also show debug messages
 flag|f|force|do not ask for confirmation (always yes)
 option|l|log_dir|folder for log files |$HOME/log/$script_prefix
 option|t|tmp_dir|folder for temp files|/tmp/$script_prefix
-option|d|dropbox|Dropbox root folder
+option|D|DROPBOX_FOLDER|Dropbox root folder
+option|S|MAILGUN_SENDER|From: address for email
+option|R|MAILGUN_RECEIVERS|To: address for email
+option|M|MAILGUN_DOMAIN|Mailgun sender domain
 option|i|input|input folder with the playlist zips|
 option|z|zip_prefix|zip file prefix|playlists-
 option|c|cpl_prefix|playlist folder prefix|ADV-
-choice|1|action|action to perform|dropbox,unzip,rename,rezip,check,env,update
+choice|1|action|action to perform|dropbox,unzip,rename,rezip,send,check,env,update
 " grep -v -e '^#' -e '^\s*$'
 }
 
@@ -43,20 +46,22 @@ Script:main() {
   action=$(Str:lower "$action")
   case $action in
   dropbox)
-    [[ -z "$dropbox" ]] && IO:die "Need Dropbox root folder as --dropbox"
-    [[ ! -d "$dropbox" ]] && IO:die "Dropbox folder [$dropbox] not found"
+    [[ -z "$DROPBOX_FOLDER" ]] && IO:die "Need Dropbox root folder as --dropbox"
+    [[ ! -d "$DROPBOX_FOLDER" ]] && IO:die "Dropbox folder [$DROPBOX_FOLDER] not found"
     [[ -z "$input" ]] && IO:die "Need ZIP folder as --input"
     [[ ! -d "$input" ]] && mkdir "$input"
     cache_zips=$(Os:tempfile)
     IO:debug "ZIP list in $cache_zips"
-    find "$dropbox" -type f -mtime -3 -name "*.zip" | sort > "$cache_zips"
+    find "$DROPBOX_FOLDER" -type f -mtime -3 -name "*.zip" | sort > "$cache_zips"
     for site in KANT KBRA KBRG KBXL KGNT KHAS KLEU KOST KKOR KLGE LPAL ; do
       site_zip=$(< $cache_zips grep "$site" | tail -1 )
       name_zip=$(basename "$site_zip")
       destination="$input/$name_zip"
       if [[ ! -f "$destination" ]] ; then
-        IO:progress "copy $name_zip ...         "
+        IO:success "copy $name_zip ...         "
         cp "$site_zip" "$destination"
+      else
+        IO:success "$destination exists!    "
       fi
     done
 
@@ -128,6 +133,16 @@ Script:main() {
         IO:print "[$zipfile]: $(unzip -l "$zipfile" | grep -c ASSETMAP) movies"
       )
       done
+    ;;
+
+  send)
+    set -ex
+    curl --user "api:$MAILGUN_API_KEY" "https://api.mailgun.net/v3/$MAILGUN_DOMAIN/messages" \
+        -F from="$MAILGUN_SENDER" -F to="$MAILGUN_RECEIVERS" -F subject="Hello $(basename $input)" \
+        -F text='Testing some Mailgun awesomeness!' \
+        --form-string html='<html>HTML version of the body</html>' \
+        -F attachment=@playlists/2023C09/renamed/export.all.csv
+
     ;;
 
   check | env)

@@ -148,7 +148,7 @@ class CplRenamer
             $this->export[] = [
                 "site_code" => $this->site_code,
                 "week_code" => $this->weekNr,
-                "feature" => $this->cleanupTitle($parts[2]),
+                "feature" => $parts[2],
                 "lang" => $parts[3],
                 "segment" => $parts[4],
                 "playlist_name" => $new_name,
@@ -224,7 +224,7 @@ class CplRenamer
         $parts = explode("/", $path);
         $response = "";
         foreach ($parts as $part) {
-            if(preg_match("|^\d\d\d\dC.*|",$part)){
+            if (preg_match("|^\d\d\d\dC.*|", $part)) {
                 $response = $part;
             }
         }
@@ -250,12 +250,4 @@ class CplRenamer
         return preg_replace("/\d\d\d\d-\d\d-\d\d/", "$shortWeek-", $input);
     }
 
-    private function cleanupTitle(string $title): string
-    {
-        $new = preg_replace("/^The/", "", $title);
-        $new = preg_replace("/^De/", "", $new);
-        $new = preg_replace("/^La/", "", $new);
-        $new = preg_replace("/^Het/", "", $new);
-        return $new;
-    }
 }
