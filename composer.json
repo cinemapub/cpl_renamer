@@ -27,5 +27,5 @@
   "require-dev": {
     "roave/security-advisories": "dev-latest"
   },
-  "version": "0.5.1"
+  "version": "0.5.2"
 }
