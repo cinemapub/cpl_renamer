@@ -1,6 +1,6 @@
 # Brightfish CPL renamer
 
-![](assets/unsplash.writer.jpg)
+![](assets/cpl_renamer.jpg)
 
 ## Problem
 
