@@ -48,11 +48,11 @@ The whole operation can be done with the `cpl_renamer.sh` scripts, which calls t
 
 ## Script Usage
 
-```
+```bash
 Program : cpl_renamer.sh  by p.forret@brightfish.be
-Version : v0.5.0 (2023-01-03 12:28)
-Purpose : process folder with Kinepolis playlists
-Usage   : cpl_renamer.sh [-h] [-q] [-v] [-f] [-l <log_dir>] [-t <tmp_dir>] [-d <dropbox>] [-i <input>] [-z <zip_prefix>] [-c <cpl_prefix>] <action>
+Version : v0.5.3 (2023-02-21 14:47)
+Purpose : process folder with Brightfish playlists
+Usage   : cpl_renamer.sh [-h] [-q] [-v] [-f] [-l <log_dir>] [-t <tmp_dir>] [-D <DROPBOX_FOLDER>] [-S <MAILGUN_SENDER>] [-R <MAILGUN_RECEIVERS>] [-M <MAILGUN_DOMAIN>] [-i <input>] [-z <zip_prefix>] [-c <cpl_prefix>] <action>
 Flags, options and parameters:
     -h|--help        : [flag] show usage [default: off]
     -q|--quiet       : [flag] no output [default: off]
@@ -60,11 +60,14 @@ Flags, options and parameters:
     -f|--force       : [flag] do not ask for confirmation (always yes) [default: off]
     -l|--log_dir <?> : [option] folder for log files   [default: /home/pforret/log/cpl_renamer]
     -t|--tmp_dir <?> : [option] folder for temp files  [default: /tmp/cpl_renamer]
-    -d|--dropbox <?> : [option] Dropbox root folder
+    -D|--DROPBOX_FOLDER <?>: [option] Dropbox root folder
+    -S|--MAILGUN_SENDER <?>: [option] From: address for email
+    -R|--MAILGUN_RECEIVERS <?>: [option] To: address for email
+    -M|--MAILGUN_DOMAIN <?>: [option] Mailgun sender domain
     -i|--input <?>   : [option] input folder with the playlist zips
     -z|--zip_prefix <?>: [option] zip file prefix  [default: playlists-]
     -c|--cpl_prefix <?>: [option] playlist folder prefix  [default: ADV-]
-    <action>         : [choice] action to perform  [options: dropbox,unzip,rename,rezip,check,env,update]
+    <action>         : [choice] action to perform  [options: dropbox,unzip,rename,rezip,send,check,env,update]
 ```
 
 ## PHP Library usage
