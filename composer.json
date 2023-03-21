@@ -21,11 +21,20 @@
     "ext-simplexml": "*",
     "pforret/php_markdown_writer": "^0.3.8",
     "vlucas/phpdotenv": "^5.5",
-    "league/csv": "^9.8"
+    "league/csv": "^9.8",
+    "mailgun/mailgun-php": "^3.5",
+    "symfony/http-client": "^6.2",
+    "nyholm/psr7": "^1.5"
   }
   ,
   "require-dev": {
-    "roave/security-advisories": "dev-latest"
+    "roave/security-advisories": "dev-latest",
+    "phpunit/phpunit": "^10.0"
   },
-  "version": "0.5.4"
+  "version": "0.5.4",
+  "config": {
+    "allow-plugins": {
+      "php-http/discovery": true
+    }
+  }
 }

@@ -136,12 +136,9 @@ Script:main() {
     ;;
 
   send)
-    set -ex
-    curl --user "api:$MAILGUN_API_KEY" "https://api.mailgun.net/v3/$MAILGUN_DOMAIN/messages" \
-        -F from="$MAILGUN_SENDER" -F to="$MAILGUN_RECEIVERS" -F subject="Hello $(basename $input)" \
-        -F text='Testing some Mailgun awesomeness!' \
-        --form-string html='<html>HTML version of the body</html>' \
-        -F attachment=@playlists/2023C09/renamed/export.all.csv
+    output_root="$input/renamed"
+    php_script="$script_install_folder/src/sendPlaylistsEmail.php"
+    php "$php_script" "Brightfish Playlists for $(basename "$input")" "$output_root"
 
     ;;
 

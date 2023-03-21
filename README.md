@@ -48,7 +48,7 @@ The whole operation can be done with the `cpl_renamer.sh` scripts, which calls t
 
 ## Script Usage
 
-```bash
+```
 Program : cpl_renamer.sh  by p.forret@brightfish.be
 Version : v0.5.3 (2023-02-21 14:47)
 Purpose : process folder with Brightfish playlists
