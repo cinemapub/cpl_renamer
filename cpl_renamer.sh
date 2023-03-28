@@ -53,15 +53,20 @@ Script:main() {
     cache_zips=$(Os:tempfile)
     IO:debug "ZIP list in $cache_zips"
     find "$DROPBOX_FOLDER" -type f -mtime -3 -name "*.zip" | sort > "$cache_zips"
+    IO:print "Found $(< "$cache_zips" wc -l | xargs) ZIP files"
     for site in KANT KBRA KBRG KBXL KGNT KHAS KLEU KOST KKOR KLGE LPAL ; do
       site_zip=$(< $cache_zips grep "$site" | tail -1 )
-      name_zip=$(basename "$site_zip")
-      destination="$input/$name_zip"
-      if [[ ! -f "$destination" ]] ; then
-        IO:success "copy $name_zip ...         "
-        cp "$site_zip" "$destination"
+      if [[ -n "$site_zip" ]] ; then
+        name_zip=$(basename "$site_zip")
+        destination="$input/$name_zip"
+        if [[ ! -f "$destination" ]] ; then
+          IO:success "copy $name_zip ...         "
+          cp "$site_zip" "$destination"
+        else
+          IO:success "$destination exists!    "
+        fi
       else
-        IO:success "$destination exists!    "
+        IO:print "No file yet for $site"
       fi
     done
 
