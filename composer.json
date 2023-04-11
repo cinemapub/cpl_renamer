@@ -31,7 +31,7 @@
     "roave/security-advisories": "dev-latest",
     "phpunit/phpunit": "^10.0"
   },
-  "version": "0.6.1",
+  "version": "0.6.2",
   "config": {
     "allow-plugins": {
       "php-http/discovery": true
