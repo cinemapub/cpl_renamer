@@ -52,7 +52,7 @@ Script:main() {
     [[ -z "$input" ]] && IO:die "Need ZIP folder as --input"
     [[ ! -d "$input" ]] && mkdir "$input"
     IO:success "Dropbox folder : $DROPBOX_FOLDER"
-    cache_zips=$(Os:tempfile)
+    cache_zips=$(Os:tempfile txt)
     IO:debug "ZIP list in $cache_zips"
     IO:progress "Check Dropbox"
     find "$DROPBOX_FOLDER" -type f -mtime -3 -name "*.zip" | sort > "$cache_zips"
