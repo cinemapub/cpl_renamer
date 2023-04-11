@@ -13,7 +13,7 @@ script_prefix=""
 script_basename=""
 install_package=""
 temp_files=()
-
+def_week="$(date '+%YC%W' -d 'today + 6 days')"
 function Option:config() {
 <<< "
 #commented lines will be filtered
@@ -22,12 +22,12 @@ flag|q|quiet|no output
 flag|v|verbose|also show debug messages
 flag|f|force|do not ask for confirmation (always yes)
 option|l|log_dir|folder for log files |$HOME/log/$script_prefix
-option|t|tmp_dir|folder for temp files|/tmp/$script_prefix
+option|t|tmp_dir|folder for temp files|/tmp/$script_prefix./cpl
 option|D|DROPBOX_FOLDER|Dropbox root folder
 option|S|MAILGUN_SENDER|From: address for email
 option|R|MAILGUN_RECEIVERS|To: address for email
 option|M|MAILGUN_DOMAIN|Mailgun sender domain
-option|i|input|input folder with the playlist zips|
+option|i|input|input folder with the playlist zips|playlists/$def_week
 option|z|zip_prefix|zip file prefix|playlists-
 option|c|cpl_prefix|playlist folder prefix|ADV-
 choice|1|action|action to perform|dropbox,unzip,rename,rezip,send,check,env,update
@@ -42,6 +42,7 @@ Script:main() {
   IO:log "[$script_basename] $script_version started"
 
   Os:require "awk"
+  IO:success "Playlist folder: $input"
 
   action=$(Str:lower "$action")
   case $action in
@@ -50,12 +51,14 @@ Script:main() {
     [[ ! -d "$DROPBOX_FOLDER" ]] && IO:die "Dropbox folder [$DROPBOX_FOLDER] not found"
     [[ -z "$input" ]] && IO:die "Need ZIP folder as --input"
     [[ ! -d "$input" ]] && mkdir "$input"
+    IO:success "Dropbox folder : $DROPBOX_FOLDER"
     cache_zips=$(Os:tempfile)
     IO:debug "ZIP list in $cache_zips"
+    IO:progress "Check Dropbox"
     find "$DROPBOX_FOLDER" -type f -mtime -3 -name "*.zip" | sort > "$cache_zips"
-    IO:print "Found $(< "$cache_zips" wc -l | xargs) ZIP files"
+    IO:print "Found $(< "$cache_zips" wc -l | xargs) recent ZIP files"
     for site in KANT KBRA KBRG KBXL KGNT KHAS KLEU KOST KKOR KLGE LPAL ; do
-      site_zip=$(< $cache_zips grep "$site" | tail -1 )
+      site_zip=$(< "$cache_zips" grep "$site" | tail -1 )
       if [[ -n "$site_zip" ]] ; then
         name_zip=$(basename "$site_zip")
         destination="$input/$name_zip"
@@ -63,7 +66,7 @@ Script:main() {
           IO:success "copy $name_zip ...         "
           cp "$site_zip" "$destination"
         else
-          IO:success "$destination exists!    "
+          IO:print "$destination exists!    "
         fi
       else
         IO:print "No file yet for $site"
